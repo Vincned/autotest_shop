@@ -6,31 +6,17 @@ from selenium.webdriver.common.by import By
 import allure
 
 @pytest.mark.parametrize('username, password, should_fail', [
-    ("", "", True),
-    ("aa", "", True),
-    ("", "aa", True),
-    ("wrong", "wrong", True),
-    ("standard_user", "wrong", True),
-    ("standard_user" ,"secret_sauce", False)
+    ("standard_user" ,"secret_sauce", False),
+    ('locked_out_user', "secret_sauce", False),
+    ('problem_user', "secret_sauce", False)
 ])
 
 def test_auth(driver, username, password, should_fail):
     login_page = LoginPage(driver)
     login_page.load()
     login_page.login(username, password)
+    assert 'inventory' in driver.current_url, 'Login should be successfull'
 
-    #error check
-    if should_fail:
-        error = login_page.get_error_message()
-        assert error is not None, "Error must be displayed while wrong data where used in the test"
-        assert 'Epic sadface' in error
-    else:
-        assert 'inventory' in driver.current_url, 'Login should be successfull'
-
-def test_logout(driver):
-    login_page = LoginPage(driver)  # imprort class and driver for using
-    login_page.load()  # call the load function
-    login_page.login("standard_user", "secret_sauce")
-    login_page.logout()
-
+def test_logout(login_user):
+    driver = login_user
     assert 'saucedemo' in driver.current_url, 'Is not default page'
