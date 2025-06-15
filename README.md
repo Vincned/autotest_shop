@@ -1,5 +1,3 @@
----
-
 ```markdown
 # 🛒 Autotest Shop – UI Test Automation for saucedemo.com
 
@@ -85,6 +83,6 @@ pytest tests/test_add_to_cart.py
 
 🧑‍💻 Author: [Jack Mur](https://github.com/Vincned)
 📅 Project start: 2025
-🔖 License: MIT (if applicable)
+🔖 License: N/A
 
 ```
