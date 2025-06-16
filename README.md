@@ -1,5 +1,3 @@
-Вот готовый `README.md`, адаптированный под твой проект на GitHub:
-
 ---
 
 ```markdown
@@ -87,6 +85,6 @@ pytest tests/test_add_to_cart.py
 
 🧑‍💻 Author: [Jack Mur](https://github.com/Vincned)
 📅 Project start: 2025
-🔖 License: MIT (if applicable)
+🔖 License: N/A
 
 ```

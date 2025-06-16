@@ -15,6 +15,7 @@ class InventoryPage:
         self.low_to_high = (By.CLASS_NAME, 'product_sort_container')
         self.active_option = (By.CLASS_NAME, 'active_option')
         self.inventory_item_price = (By.CLASS_NAME, 'inventory_item_price')
+        self.card_product = (By.CLASS_NAME, 'inventory_item_name ')
 
     def is_loaded(self):
         self.wait(EC.visibility_of_element_located(self.inventory_of_the_item_name))
@@ -51,3 +52,15 @@ class InventoryPage:
             cart.click()
         except:
             return None
+
+    def open_product_page(self):
+        try:
+            product_page = self.driver.find_elements(*self.card_product)
+            for el in product_page:
+                if 'Sauce Labs Backpack' in el.text:
+                    el.click()
+                    return True
+        except Exception as e:
+            print(f'This card with item was not found on the page:{e}')
+            return False
+

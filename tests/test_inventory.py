@@ -11,6 +11,14 @@ def test_sort_prices_low_to_high(login_user):
     short_list = inventory_page.sort_price_low_to_high()
     assert short_list == sorted(short_list), 'Prices are not sorted ascending'
 
+def test_open_product_page(login_user):
+    inventory_page = InventoryPage(login_user)
+    inventory_page.open_product_page('Sauce Labs Backpack')
+    assert 'inventory-item' in login_user.current_url, 'The ULS is not right'
+
+    prduct_title = inventory_page.find_element(By.CSS_SELECTOR, 'inventory_details_name large_size')
+    assert 'Sauce Labs Backpack' in prduct_title.text, 'Wrong product detail page'
+
 @pytest.mark.parametrize('username, password', [
     ('standard_user', 'secret_sauce')
 ])
