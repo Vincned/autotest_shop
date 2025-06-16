@@ -37,5 +37,5 @@ class CartPage:
             print(f'Returned to the URL:', self.driver.current_url)
             return True
         except Exception as e:
-            print(f'Not returned to the shopping page, Error: {e}')
+            print(f'Not returned to the shopping page, Error: {e}, current url:{self.driver.current_url}')
             return False

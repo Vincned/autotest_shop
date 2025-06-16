@@ -6,6 +6,11 @@ from pages.login_page_v2 import LoginPage
 from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
 
+def test_sort_prices_low_to_high(login_user):
+    inventory_page = InventoryPage(login_user)
+    short_list = inventory_page.sort_price_low_to_high()
+    assert short_list == sorted(short_list), 'Prices are not sorted ascending'
+
 @pytest.mark.parametrize('username, password', [
     ('standard_user', 'secret_sauce')
 ])
