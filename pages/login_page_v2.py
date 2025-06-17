@@ -14,7 +14,7 @@ class LoginPage: #create class
         self.button = (By.ID, 'login-button') #button search
         self.burger_menu = (By.CLASS_NAME, 'bm-burger-button')
         self.logout_button = (By.ID, 'logout_sidebar_link')
-        self.wait = WebDriverWait(self.driver, 10)
+        self.wait = WebDriverWait(self.driver, 15)
         self.error_message = (By.CSS_SELECTOR, 'h3[data-test="error"]')
 
     def load(self, url='https://www.saucedemo.com'):

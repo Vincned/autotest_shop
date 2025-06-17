@@ -6,23 +6,36 @@ from pages.login_page_v2 import LoginPage
 from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
 
+def test_item_full_check(login_user):
+    inventory_page = InventoryPage(login_user)
+    inventory_page.open_product_page('Sauce Labs Backpack')
+    info = inventory_page.full_info_about_item()
+    assert info['name'], 'Item name is empty'
+    assert info['desc'], 'Item desc is empty'
+    assert info['price'].startswith('$'), 'Price should start with "$"'
+    assert info['add_button'].is_displayed(), 'Add to cart button is not visible'
+
 def test_sort_prices_low_to_high(login_user):
     inventory_page = InventoryPage(login_user)
     short_list = inventory_page.sort_price_low_to_high()
     assert short_list == sorted(short_list), 'Prices are not sorted ascending'
 
+def test_sort_prices_high_to_low(login_user):
+    inventory_page = InventoryPage(login_user)
+    short_list = inventory_page.sort_price_high_to_low()
+    assert short_list == sorted(short_list, reverse=True), 'Prices are not sorted ascending'
+
 def test_open_product_page(login_user):
     inventory_page = InventoryPage(login_user)
     inventory_page.open_product_page('Sauce Labs Backpack')
-    assert 'inventory-item' in login_user.current_url, 'The ULS is not right'
+    assert 'inventory-item' in login_user.current_url, 'The URL is not right'
 
-    prduct_title = inventory_page.find_element(By.CSS_SELECTOR, 'inventory_details_name large_size')
-    assert 'Sauce Labs Backpack' in prduct_title.text, 'Wrong product detail page'
+    title_of_product = inventory_page.get_product_title()
+    assert 'Sauce Labs Backpack' in title_of_product, 'Wrong product detail page'
 
 @pytest.mark.parametrize('username, password', [
     ('standard_user', 'secret_sauce')
 ])
-
 def test_add_to_cart(driver, username, password):
     login_page = LoginPage(driver)
     login_page.load()
@@ -43,11 +56,6 @@ def test_add_to_cart(driver, username, password):
     assert check_cart == 'Sauce Labs Backpack', 'Item was not found'
 
     cart_remove = cart_page.remove_from_cart()
-    assert cart_remove, 'Item was deleted from the cart'
+    assert cart_remove, 'Item was not deleted from the cart'
 
     assert cart_page.return_to_shopping(), 'Failed to return to inventory page'
-
-    inventory_page.shopping_cart_quantity()
-
-
-
