@@ -1,5 +1,3 @@
----
-
 ```markdown
 # 🛒 Autotest Shop – UI Test Automation for saucedemo.com
 
