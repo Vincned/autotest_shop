@@ -5,22 +5,25 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import allure
 
-@pytest.mark.parametrize('username, password, should_fail', [
-    ("standard_user" ,"secret_sauce", False),
-    ('locked_out_user', "secret_sauce", True),
-    ('problem_user', "secret_sauce", False)
+import pytest
+from pages.login_page_v2 import LoginPage
+
+@pytest.mark.parametrize("username, password, expected_error", [
+    ("locked_out_user", "secret_sauce", "Epic sadface: Sorry, this user has been locked out."),
+    ("invalid_user", "secret_sauce", "Epic sadface: Username and password do not match"),
+    ("standard_user", "wrong_password", "Epic sadface: Username and password do not match"),
+    ("", "", "Epic sadface: Username is required"),
 ])
-@allure.title('Login tests various users')
-def test_auth(driver, username, password, should_fail):
+def test_auth_invalid(driver, username, password, expected_error):
     login_page = LoginPage(driver)
     login_page.load()
-    login_page.login(username, password)
+    login_page.login(username, password, expect_success=False)
 
-    if should_fail:
-        error = login_page.get_error_message()
-        assert error is not None, f"Expected login to fail for user {username}, but it succeeded"
-    else:
-        assert login_page.is_login_successful(), f"Login failed for valid user {username}"
+    error = login_page.get_error_message()
+
+    assert error is not None, "Expected message about error, but NONE"
+    assert expected_error.lower() in error.lower(), f"Expected: '{expected_error}', got: '{error}'"
+
 
 @allure.title('Logout test after successful login')
 def test_logout(login_user):
